@@ -99,6 +99,6 @@ expressApp.get('/api', (req, res) => {
 
 expressApp.get('/api/file', file);
 
-expressApp.listen(3333, () => {
-  console.log(`${process.env.NODE_ENV}: bot listening on port 3333!`);
+expressApp.listen(3001, () => {
+  console.log(`${process.env.NODE_ENV}: bot listening on port 3001!`);
 });
