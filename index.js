@@ -11,7 +11,9 @@ const prepareLink = (file) => {
     process.env.NODE_ENV == 'development'
       ? process.env.DEV_URL
       : 'https://gtfpl.baradusov.ru';
-  return `${url}/api/file?id=${file.file_id}&name=${fileName}`;
+  return `${url}/api/file?id=${file.file_id}&name=${encodeURIComponent(
+    fileName
+  )}`;
 };
 
 const BOT_TOKEN =

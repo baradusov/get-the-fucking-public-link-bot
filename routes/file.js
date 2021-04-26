@@ -13,10 +13,10 @@ module.exports = async (req, res) => {
     const fileLink = await bot.telegram.getFileLink(req.query.id);
     const response = await fetch(fileLink);
 
-    res.set('Content-Disposition',`attachment; filename="${req.query.name}"`);
+    res.set('Content-Disposition', `attachment; filename="${req.query.name}"`);
     response.body.pipe(res);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(400).send(error.description);
   }
 };
