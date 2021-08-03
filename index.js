@@ -6,18 +6,20 @@ import { Telegraf } from 'telegraf';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import file from './routes/file.js';
+import { BOT_REPLIES } from './_lib/config.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const prepareLink = (file) => {
   const fileName = file.file_name || 'file';
+  const type = file.mime_type || '';
   const url =
     process.env.NODE_ENV == 'development'
       ? process.env.DEV_URL
       : 'https://gtfpl.baradusov.ru';
   return `${url}/api/file?id=${file.file_id}&name=${encodeURIComponent(
     fileName
-  )}`;
+  )}&type=${encodeURIComponent(type)}`;
 };
 
 const BOT_TOKEN =
@@ -28,13 +30,17 @@ const bot = new Telegraf(BOT_TOKEN);
 
 bot.start(async (ctx) => {
   return ctx.reply(
-    "Send or forward me a fucking file and I'll give you the fucking public download link without fucking ads. This will only work with files of up to 20 MB in size."
+    "Send or forward me a file and I'll give you the public download link without ads. This will only work with files of up to 20 MB in size."
   );
 });
 
-bot.on('message', async (ctx) => {
-  console.log(JSON.stringify(ctx.update, null, 2));
+bot.help((ctx) => {
+  return ctx.replyWithMarkdown(BOT_REPLIES.helpCommand, {
+    disable_web_page_preview: true,
+  });
+});
 
+bot.on('message', async (ctx) => {
   if (ctx.message.voice) {
     return ctx.reply(prepareLink(ctx.message.voice), {
       reply_to_message_id: ctx.message.message_id,

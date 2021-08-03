@@ -15,6 +15,9 @@ export default async (req, res) => {
     const fileLink = await bot.telegram.getFileLink(req.query.id);
     const response = await fetch(fileLink);
 
+    if (req.query.type) {
+      res.set('Content-Type', req.query.type);
+    }
     res.set('Content-Disposition', `attachment; filename="${req.query.name}"`);
     response.body.pipe(res);
   } catch (error) {
